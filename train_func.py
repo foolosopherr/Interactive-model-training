@@ -49,4 +49,4 @@ def create_pycaret_model(df,
     tuned_model = clf.tune_model(model, choose_better=True, n_iter=n_iter, optimize=optimize)
     pulled_df_tuned_model = clf.pull().reset_index().astype('str').set_index('Fold')
     
-    return model, pulled_df_model, pulled_df_tuned_model
+    return tuned_model, pulled_df_model, pulled_df_tuned_model

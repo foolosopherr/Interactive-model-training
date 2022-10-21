@@ -1,5 +1,4 @@
 from pycaret.datasets import get_data
-from pycaret.classification import predict_model, plot_model
 import pycaret.classification as clf
 from train_func import create_pycaret_model
 import streamlit as st
@@ -81,11 +80,11 @@ option_remove_outliers = st.sidebar.checkbox('Remove outliers', False)
 option_outliers_threshold = st.sidebar.slider('Outliers threshold', 0.01, 0.3, 0.05, 0.01)
 option_normalize = st.sidebar.checkbox('Normalize', False)
 option_normalize_method = st.sidebar.selectbox('Normalize method', ['zscore', 'minmax', 'maxabs', 'robust'])
-option_data_split_shuffle = st.sidebar.checkbox('Data split shuffle', False)
-option_data_split_stratify = st.sidebar.checkbox('Data split statify', False)
+option_data_split_shuffle = st.sidebar.checkbox('Data split shuffle', True)
+option_data_split_stratify = st.sidebar.checkbox('Data split statify', True)
 option_fold = st.sidebar.slider('Number of folds', 2, 20, 5, 1)
 option_fold_strategy = st.sidebar.selectbox('Fold strategy', ['stratifiedkfold', 'kfold'])
-option_fold_shuffle = st.sidebar.checkbox('Fold shuffle', False)
+option_fold_shuffle = st.sidebar.checkbox('Fold shuffle', True)
 option_session_id = st.sidebar.number_input('Random seed', 0, 1000000, 0, 1)
 
 st.sidebar.write(""" ### Tuning parameters""")
@@ -96,7 +95,7 @@ option_n_iter = st.sidebar.number_input('Number of iterations', 10, 500, 20, 1)
 # model = load_model('deployment_28042020')
 
 def predict(model, input_df=None):
-    predict_model(estimator=model, data=input_df)
+    clf.predict_model(estimator=model, data=input_df)
     pulled = clf.pull().set_index('Model')
     return pulled
 
@@ -146,5 +145,5 @@ if col1_cb1:
     option_plot_set = st.selectbox(""" Choose set""", ['Train set', 'Test set'])
     use_train_data = option_plot_set == 'Train set'
     st.write(f""" # {all_plots[option_plot]}""")
-    plot_model(model, option_plot, display_format='streamlit', use_train_data=use_train_data)
+    clf.plot_model(model, option_plot, display_format='streamlit', use_train_data=use_train_data)
     
